@@ -7,12 +7,33 @@ body {
 #board {
   display: flex;
   flex-wrap: wrap;
-  width: 800px;
-  margin:auto;  
-  border: 1px solid black
+  width: 832px; 
+  margin:auto;
+  border: 1px solid black;
 }
 
 .cell {
+  position: relative;
   height: 100px;
   width: 100px;
+  border: 2px solid black;
+}
+
+.coin {
+  height: 80px;
+  width: 80px;
+  border: 1px solid black;
+  border-radius: 50%;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top:50%;
+  left:50%;
+}
+
+.black {
+  background-color: black;
+}
+
+.white {
+  background-color: white;
 }

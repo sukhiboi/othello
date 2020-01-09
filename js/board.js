@@ -10,7 +10,20 @@ const createBoard = function (numOfRows, numOfCols) {
   }
 };
 
+const setCoin = function ([rowId, colId], coinColor) {
+  const cellId = `${rowId}_${colId}`;
+  const cell = document.getElementById(cellId);
+  const coin = document.createElement('div');
+  coin.classList.add('coin');
+  coin.classList.add(coinColor);
+  cell.appendChild(coin);
+};
+
 const main = function () {
-  const numOfRows = 8, numOfCols = 8;
-  createBoard(numOfRows, numOfCols)
+  const numOfRows = 8, numOfCols = 8, BLACK = 'black', WHITE = 'white';
+  createBoard(numOfRows, numOfCols);
+  setCoin([3, 3], WHITE)
+  setCoin([3, 4], BLACK)
+  setCoin([4, 3], "black")
+  setCoin([4, 4], WHITE)
 };
