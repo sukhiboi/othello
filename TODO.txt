@@ -2,3 +2,5 @@ TODO:
 
   - folder structure [done]
   - Crete board [done]
+  
+  - Create coins
