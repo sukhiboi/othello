@@ -1,15 +1,3 @@
-const createBoard = function (numOfRows, numOfCols) {
-  const board = document.getElementById('board');
-  for (let rowId = 0; rowId < numOfRows; rowId++) {
-    for (let colId = 0; colId < numOfCols; colId++) {
-      const cell = document.createElement('div');
-      cell.id = `${rowId}_${colId}`;
-      cell.classList.add('cell')
-      board.appendChild(cell);
-    }
-  }
-};
-
 const setCoin = function ([rowId, colId], coinColor) {
   const cellId = `${rowId}_${colId}`;
   const cell = document.getElementById(cellId);
@@ -17,6 +5,31 @@ const setCoin = function ([rowId, colId], coinColor) {
   coin.classList.add('coin');
   coin.classList.add(coinColor);
   cell.appendChild(coin);
+  cell.removeEventListener('click', clickHandler)
+};
+
+const clickHandler = function () {
+  const cellId = event.target.id.split('_');
+  console.log(cellId);
+  setCoin(cellId, "black")
+};
+
+const createCell = function (rowId, colId) {
+  const cell = document.createElement('div');
+  cell.id = `${rowId}_${colId}`;
+  cell.classList.add('cell');
+  cell.addEventListener('click', clickHandler);
+  return cell;
+};
+
+const createBoard = function (numOfRows, numOfCols) {
+  const board = document.getElementById('board');
+  for (let rowId = 0; rowId < numOfRows; rowId++) {
+    for (let colId = 0; colId < numOfCols; colId++) {
+      const cell = createCell(rowId, colId);
+      board.appendChild(cell);
+    }
+  }
 };
 
 const main = function () {

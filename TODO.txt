@@ -5,4 +5,6 @@ TODO:
   
   - Create coins [done]
 
-  - Create click events for empty cells
+  - Create click events for empty cells [done]
+  
+  - Create players
