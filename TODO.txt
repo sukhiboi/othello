@@ -3,4 +3,6 @@ TODO:
   - folder structure [done]
   - Crete board [done]
   
-  - Create coins
+  - Create coins [done]
+
+  - Create click events for empty cells
