@@ -1,4 +1,4 @@
 TODO:
 
-  - folder structure
-  - Crete board
+  - folder structure [done]
+  - Crete board [done]
