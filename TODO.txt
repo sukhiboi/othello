@@ -8,3 +8,5 @@ TODO:
   - Create click events for empty cells [done]
   
   - Create players
+
+  - We can make class of coin cell and player
