@@ -1,28 +1,45 @@
 body {
   margin: 0;
-  text-align: center;
   padding: 0;
+  text-align: center;
+  position: relative;
+}
+
+.centre {
+  position: fixed;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
 }
 
 #board {
   display: flex;
   flex-wrap: wrap;
-  width: 832px; 
+  width: 432px; 
   margin:auto;
-  border: 1px solid black;
+  border: 2px solid rgba(0,0,0,1);
 }
 
 .cell {
   position: relative;
-  height: 100px;
-  width: 100px;
-  border: 2px solid black;
+  height: 50px;
+  width: 50px;
+  border: 2px solid rgba(0,0,0,0.5);
+  background-color: #02A647;
+}
+
+.selectable:hover {
+  cursor: pointer;
+  background-color: #013220;
+}
+
+.unselectable:hover {
+  cursor: not-allowed
 }
 
 .coin {
-  height: 80px;
-  width: 80px;
-  border: 1px solid black;
+  height: 40px;
+  width: 40px;
   border-radius: 50%;
   position: absolute;
   transform: translate(-50%, -50%);

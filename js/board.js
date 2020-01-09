@@ -8,9 +8,11 @@ const setCoin = function (cellId, coinColor) {
   const cell = document.getElementById(cellId);
   const coin = document.createElement('div');
   coin.classList.add('coin');
+  coin.classList.add('unselectable');
   coin.classList.add(coinColor);
   cell.appendChild(coin);
-  cell.removeEventListener('click', clickHandler)
+  cell.removeEventListener('click', clickHandler);
+  cell.classList.remove('selectable')
 };
 
 const clickHandler = function () {
@@ -22,6 +24,7 @@ const createCell = function (cellId) {
   const cell = document.createElement('div');
   cell.id = cellId;
   cell.classList.add('cell');
+  cell.classList.add('selectable');
   cell.addEventListener('click', clickHandler);
   return cell;
 };
