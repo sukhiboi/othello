@@ -1,4 +1,20 @@
 const numOfRows = 8, numOfCols = 8;
+
+class Player {
+  constructor(name, color) {
+    this._name = name;
+    this._color = color
+  }
+
+  name() {
+    return this._name;
+  }
+
+  color() {
+    return this._color;
+  }
+};
+
 const coinType = {
   black: 'black',
   white: 'white'
@@ -14,12 +30,12 @@ const setCoin = function (cellId, coinColor) {
   cell.removeEventListener('click', clickHandler);
 };
 
-
 const clickHandler = function () {
   const cellId = event.target.id;
   const currentPlayer = changePlayer(playerId);
   playerId = +(!playerId)
   setCoin(cellId, currentPlayer.color());
+  changeCoins()
 };
 
 const createCell = function (cellId) {
@@ -27,6 +43,7 @@ const createCell = function (cellId) {
   cell.id = cellId;
   cell.className = 'cell selectable';
   cell.addEventListener('click', clickHandler);
+  cell.innerText = cellId;
   return cell;
 };
 
@@ -50,27 +67,40 @@ const setInitialCoins = function () {
   coins.forEach(coin => setCoin(coin.id, coin.colour))
 };
 
-class Player {
-  constructor(name, color) {
-    this._name = name;
-    this._color = color
-  }
-
-  name() {
-    return this._name;
-  }
-
-  color() {
-    return this._color;
-  }
-}
-
 const changePlayer = function (playerId) {
   const players = {
     0: new Player('rahit', coinType.white),
     1: new Player('sukhiboi', coinType.black)
   }
   return players[playerId];
+};
+
+const changeCoins = function () {
+  const [rowId, collId] = event.target.id.split('_');
+
+  const findLastCellId = function (rowId, collId) {
+    const cellId = `${rowId}_${collId}`
+    const cell = document.getElementById(cellId);
+    const classes = Array.from(cell.classList);
+    const isSelectable = classes.includes('selectable');
+    if (isSelectable) {
+      return `${+rowId - 1}_${collId}`;
+    }
+    return findLastCellId(+rowId + 1, collId)
+  };
+  
+  const nextRowId = +rowId + 1;
+  const currentCellId = `${rowId}_${collId}`;
+  const currentCell = document.getElementById(currentCellId);
+  const lastCellId = findLastCellId(nextRowId, collId);
+  const lastCell = document.getElementById(lastCellId);
+
+  const currentCoinColor = currentCell.getElementsByTagName('div')[0].classList[2]; // review me please
+  const lastCoinColor = lastCell.getElementsByTagName('div')[0].classList[2]; // review me please
+
+  if (currentCoinColor == lastCoinColor) {
+//change all the coin color between these coins
+  }
 };
 
 

@@ -1,12 +1,28 @@
 TODO:
 
   - folder structure [done]
-  - Crete board [done]
+  - Create board [done]
   
   - Create coins [done]
 
   - Create click events for empty cells [done]
   
-  - Create players
+  - Create players [done]
 
-  - We can make class of coin cell and player
+  - make player class [done]
+
+  - We can make class of coin cell and 
+
+  Html function 
+    changeCoins - I
+    changePlayer - I
+    setInitialCoins - I
+    clickHandler - I
+
+    setCoin - R
+
+    createCell - H
+    createBoard - H
+
+
+- Create a game class to encapsulate the game data
