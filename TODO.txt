@@ -23,7 +23,7 @@ TODO:
     createBoard - H
 
 
-- Create a game class to encapsulate the game data
-- Create Board class to keep record of coins.
-- Create coin class to make coins.
-- Removed player class.
+- Create a game class to encapsulate the game data [done]
+- Removed player class. [done]
+- remove bored class [done]
+- remove else 

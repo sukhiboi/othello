@@ -1,37 +1,23 @@
 class Game {
-  constructor(player1, player2) {
+  constructor(player1, player2, initialCoins) {
     this.player1 = player1;
     this.player2 = player2;
-
     this.currentPlayer = player1;
-    this.currentCoinColor = this.currentPlayer.color;
+    this._coins = [...initialCoins];
   }
 
-  get currentState() {
+  get coins() {
+    return this._coins.slice();
+  }
+
+  addCoinAt(id) {
+    this._coins.push({ id, color: this.currentPlayer.color });
+
     if (this.currentPlayer == this.player1) {
       this.currentPlayer = this.player2
     } else {
       this.currentPlayer = this.player1;
     }
-
-    return {
-      currentPlayerName: this.currentPlayer,
-      currentCoinColor: this.currentPlayer.color,
-    }
-  }
-}
-
-class Board {
-  constructor(initialCoins) {
-    this._coins = [...initialCoins];
-  }
-
-  addCoinAt(id, color) {
-    this._coins.push({ id, color });
-  }
-
-  get coins() {
-    return this._coins.slice();
   }
 }
 
@@ -67,13 +53,12 @@ const displayCoins = function (coins) {
   })
 };
 
-const addClickListener = function (game, board) {
+const addClickListener = function (game) {
   const othelloBoard = document.getElementById('board');
+
   othelloBoard.addEventListener('click', () => {
-    const gameState = game.currentState;
-    board.addCoinAt(event.target.id, gameState.currentCoinColor);
-    const coins = board.coins;
-    displayCoins(coins);
+    game.addCoinAt(event.target.id);
+    displayCoins(game.coins);
   })
 };
 
@@ -89,12 +74,11 @@ const createInitialCoins = function () {
 };
 
 const main = function () {
-  const player1 = { name: 'alpha', color: 'black' };
-  const player2 = { name: 'beta', color: 'white' };
+  const player1 = { name: 'alpha', color: 'white' };
+  const player2 = { name: 'beta', color: 'black' };
   setupGame();
   const initialCoins = createInitialCoins();
-  const game = new Game(player1, player2);
-  const board = new Board(initialCoins);
+  const game = new Game(player1, player2, initialCoins);
   addClickListener(game, board);
   displayCoins(initialCoins);
 };
