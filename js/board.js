@@ -1,42 +1,28 @@
-class Coin {
-  constructor(coinId, color) {
-    this.coinId = coinId;
-    this.coinColor = color;
-  }
-
-  get id() {
-    return this.coinId
-  }
-
-  get color() {
-    return this.coinColor;
-  }
-}
-
 class Game {
   constructor(player1, player2) {
     this.player1 = player1;
     this.player2 = player2;
-    this.coins = [];
   }
 
-  get currentPlayer() {
-    return this.player1;
-  }
-
-  getBoardCoins(board) {
-    return board.coins.slice();
+  get currentState() {
+    return {
+      currentPlayerName: this.player1.name,
+      currentCoinColor: this.player1.color,
+    }
   }
 }
 
 class Board {
   constructor(initialCoins) {
-    this.coins = [...initialCoins];
+    this._coins = [...initialCoins];
   }
 
   addCoinAt(id, color) {
-    const coin = new Coin(id, color);
-    this.coins.push(coin);
+    this._coins.push({ id, color });
+  }
+
+  get coins() {
+    return this._coins.slice();
   }
 }
 
@@ -75,17 +61,29 @@ const displayCoins = function (coins) {
 const addClickListener = function (game, board) {
   const othelloBoard = document.getElementById('board');
   othelloBoard.addEventListener('click', () => {
-    board.addCoinAt(event.target.id, game.currentPlayer.color);
-    const coins = game.getBoardCoins(board);
+    const gameState = game.currentState;
+    board.addCoinAt(event.target.id, gameState.currentCoinColor);
+    const coins = board.coins;
     displayCoins(coins);
   })
+};
+
+const createCoin = (id, color) => { return { id, color } };
+
+const createInitialCoins = function () {
+  const coinsInfo = [['3_3', 'black'], ['3_4', 'white'], ['4_3', 'white'], ['4_4', 'black']];
+  const initialCoins = coinsInfo.map(info => {
+    const [id, color] = info;
+    return createCoin(id, color);
+  })
+  return initialCoins;
 };
 
 const main = function () {
   const player1 = { name: 'alpha', color: 'black' };
   const player2 = { name: 'beta', color: 'white' };
   setupGame();
-  const initialCoins = [new Coin('3_3', 'black'), new Coin('3_4', 'white'), new Coin('4_3', 'white'), new Coin('4_4', 'black')]
+  const initialCoins = createInitialCoins();
   const game = new Game(player1, player2);
   const board = new Board(initialCoins);
   addClickListener(game, board);
