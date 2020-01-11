@@ -2,22 +2,22 @@ class Game {
   constructor(player1, player2, initialCoins) {
     this.player1 = player1;
     this.player2 = player2;
-    this.currentPlayer = player1;
+    this.turn = player1;
     this._coins = [...initialCoins];
   }
 
-  get coins() {
+  coins() {
     return this._coins.slice();
   }
 
   addCoinAt(id) {
-    this._coins.push({ id, color: this.currentPlayer.color });
-
-    if (this.currentPlayer == this.player1) {
-      this.currentPlayer = this.player2
-    } else {
-      this.currentPlayer = this.player1;
+    this._coins.push({ id, color: this.turn.color });
+    if (this.turn == this.player1) {
+      this.turn = this.player2;
+      return;
     }
+    this.turn = this.player1;
+    return;
   }
 }
 
@@ -54,14 +54,12 @@ const displayCoins = function (coins) {
 };
 
 const addClickListener = function (game) {
-  const othelloBoard = document.getElementById('board');
-
-  othelloBoard.addEventListener('click', () => {
+  const board = document.getElementById('board');
+  board.addEventListener('click', () => {
     game.addCoinAt(event.target.id);
-    displayCoins(game.coins);
+    displayCoins(game.coins());
   })
 };
-
 
 const createInitialCoins = function () {
   const createCoin = (id, color) => { return { id, color } };
