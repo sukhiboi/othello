@@ -11,8 +11,6 @@ TODO:
 
   - make player class [done]
 
-  - We can make class of coin cell and 
-
   Html function 
     changeCoins - I
     changePlayer - I
@@ -26,3 +24,6 @@ TODO:
 
 
 - Create a game class to encapsulate the game data
+- Create Board class to keep record of coins.
+- Create coin class to make coins.
+- Removed player class.

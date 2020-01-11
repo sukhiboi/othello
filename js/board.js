@@ -1,111 +1,93 @@
-const numOfRows = 8, numOfCols = 8;
-
-class Player {
-  constructor(name, color) {
-    this._name = name;
-    this._color = color
+class Coin {
+  constructor(coinId, color) {
+    this.coinId = coinId;
+    this.coinColor = color;
   }
 
-  name() {
-    return this._name;
+  get id() {
+    return this.coinId
   }
 
-  color() {
-    return this._color;
+  get color() {
+    return this.coinColor;
   }
-};
+}
 
-const coinType = {
-  black: 'black',
-  white: 'white'
-};
-let playerId = 0;
-
-const setCoin = function (cellId, coinColor) {
-  const cell = document.getElementById(cellId);
-  const coin = document.createElement('div');
-  coin.className = `coin unselectable ${coinColor}`;
-  cell.classList.remove('selectable')
-  cell.appendChild(coin);
-  cell.removeEventListener('click', clickHandler);
-};
-
-const clickHandler = function () {
-  const cellId = event.target.id;
-  const currentPlayer = changePlayer(playerId);
-  playerId = +(!playerId)
-  setCoin(cellId, currentPlayer.color());
-  changeCoins()
-};
-
-const createCell = function (cellId) {
-  const cell = document.createElement('div');
-  cell.id = cellId;
-  cell.className = 'cell selectable';
-  cell.addEventListener('click', clickHandler);
-  cell.innerText = cellId;
-  return cell;
-};
-
-const createBoard = function (numOfRows, numOfCols) {
-  const board = document.getElementById('board');
-  for (let rowId = 0; rowId < numOfRows; rowId++) {
-    for (let colId = 0; colId < numOfCols; colId++) {
-      const cell = createCell(`${rowId}_${colId}`);
-      board.appendChild(cell);
-    }
+class Game {
+  constructor(player1, player2) {
+    this.player1 = player1;
+    this.player2 = player2;
+    this.coins = [];
   }
-};
 
-const setInitialCoins = function () {
-  const coins = [
-    { id: '3_3', colour: coinType.white },
-    { id: '3_4', colour: coinType.black },
-    { id: '4_3', colour: coinType.black },
-    { id: '4_4', colour: coinType.white }
-  ]
-  coins.forEach(coin => setCoin(coin.id, coin.colour))
-};
-
-const changePlayer = function (playerId) {
-  const players = {
-    0: new Player('rahit', coinType.white),
-    1: new Player('sukhiboi', coinType.black)
+  get currentPlayer() {
+    return this.player1;
   }
-  return players[playerId];
-};
 
-const changeCoins = function () {
-  const [rowId, collId] = event.target.id.split('_');
+  getBoardCoins(board) {
+    return board.coins.slice();
+  }
+}
 
-  const findLastCellId = function (rowId, collId) {
-    const cellId = `${rowId}_${collId}`
-    const cell = document.getElementById(cellId);
-    const classes = Array.from(cell.classList);
-    const isSelectable = classes.includes('selectable');
-    if (isSelectable) {
-      return `${+rowId - 1}_${collId}`;
-    }
-    return findLastCellId(+rowId + 1, collId)
+class Board {
+  constructor(initialCoins) {
+    this.coins = [...initialCoins];
+  }
+
+  addCoinAt(id, color) {
+    const coin = new Coin(id, color);
+    this.coins.push(coin);
+  }
+}
+
+const setupGame = function () {
+  const createCell = function (cellId) {
+    const cell = document.createElement('div');
+    cell.id = cellId;
+    cell.className = 'cell selectable';
+    cell.innerText = cellId;
+    return cell;
   };
-  
-  const nextRowId = +rowId + 1;
-  const currentCellId = `${rowId}_${collId}`;
-  const currentCell = document.getElementById(currentCellId);
-  const lastCellId = findLastCellId(nextRowId, collId);
-  const lastCell = document.getElementById(lastCellId);
 
-  const currentCoinColor = currentCell.getElementsByTagName('div')[0].classList[2]; // review me please
-  const lastCoinColor = lastCell.getElementsByTagName('div')[0].classList[2]; // review me please
+  const createBoard = function (numOfRows, numOfCols) {
+    const board = document.getElementById('board');
+    for (let rowId = 0; rowId < numOfRows; rowId++) {
+      for (let colId = 0; colId < numOfCols; colId++) {
+        const cell = createCell(`${rowId}_${colId}`);
+        board.appendChild(cell);
+      }
+    }
+  };
 
-  if (currentCoinColor == lastCoinColor) {
-//change all the coin color between these coins
-  }
+  const numOfRows = 8, numOfCols = 8;
+  createBoard(numOfRows, numOfCols);
 };
 
+const displayCoins = function (coins) {
+  coins.forEach(coin => {
+    const cell = document.getElementById(coin.id);
+    const currentCoin = document.createElement('div');
+    currentCoin.className = `coin ${coin.color}`;
+    cell.appendChild(currentCoin);
+  })
+};
+
+const addClickListener = function (game, board) {
+  const othelloBoard = document.getElementById('board');
+  othelloBoard.addEventListener('click', () => {
+    board.addCoinAt(event.target.id, game.currentPlayer.color);
+    const coins = game.getBoardCoins(board);
+    displayCoins(coins);
+  })
+};
 
 const main = function () {
-  createBoard(numOfRows, numOfCols);
-  setInitialCoins();
-
+  const player1 = { name: 'alpha', color: 'black' };
+  const player2 = { name: 'beta', color: 'white' };
+  setupGame();
+  const initialCoins = [new Coin('3_3', 'black'), new Coin('3_4', 'white'), new Coin('4_3', 'white'), new Coin('4_4', 'black')]
+  const game = new Game(player1, player2);
+  const board = new Board(initialCoins);
+  addClickListener(game, board);
+  displayCoins(initialCoins);
 };
