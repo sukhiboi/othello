@@ -2,12 +2,21 @@ class Game {
   constructor(player1, player2) {
     this.player1 = player1;
     this.player2 = player2;
+
+    this.currentPlayer = player1;
+    this.currentCoinColor = this.currentPlayer.color;
   }
 
   get currentState() {
+    if (this.currentPlayer == this.player1) {
+      this.currentPlayer = this.player2
+    } else {
+      this.currentPlayer = this.player1;
+    }
+
     return {
-      currentPlayerName: this.player1.name,
-      currentCoinColor: this.player1.color,
+      currentPlayerName: this.currentPlayer,
+      currentCoinColor: this.currentPlayer.color,
     }
   }
 }
@@ -68,14 +77,14 @@ const addClickListener = function (game, board) {
   })
 };
 
-const createCoin = (id, color) => { return { id, color } };
 
 const createInitialCoins = function () {
+  const createCoin = (id, color) => { return { id, color } };
   const coinsInfo = [['3_3', 'black'], ['3_4', 'white'], ['4_3', 'white'], ['4_4', 'black']];
   const initialCoins = coinsInfo.map(info => {
     const [id, color] = info;
     return createCoin(id, color);
-  })
+  });
   return initialCoins;
 };
 
