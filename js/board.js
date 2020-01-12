@@ -67,10 +67,12 @@ const addClickListener = function(game) {
   });
 };
 
-const main = function() {
-  const player1 = { name: "alpha", color: "white" };
-  const player2 = { name: "beta", color: "black" };
+const main = function () {
+  const player1 = { name: prompt("Player1 name?"), color: "white" };
+  const player2 = { name: prompt("Player2 name?"), color: "black" };
   setupGame();
   const game = new Game(player1, player2);
+
+  displayCoins(game.coins());
   addClickListener(game);
 };
